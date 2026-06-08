@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3001/api';
+const API_URL = '/api';
 const TOKEN_KEY = 'martinos_admin_token';
 
 function authHeader() {
