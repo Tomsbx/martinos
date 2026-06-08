@@ -69,6 +69,12 @@ const products = [
     price: 99,
     category: 'guarnicion',
   },
+  {
+    name: 'Producto Test',
+    description: 'Solo para pruebas',
+    price: 10,
+    category: 'promo',
+  },
 ];
 
 async function seed() {

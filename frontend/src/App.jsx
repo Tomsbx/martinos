@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
+import Failure from './pages/Failure';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import Comandas from './pages/admin/Comandas';
@@ -30,6 +31,9 @@ export default function App() {
             <Route path="/menu" element={<Menu />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/success" element={<Success />} />
+            <Route path="/failure" element={<Failure />} />
+            <Route path="/order/success" element={<Navigate to="/success" replace />} />
+            <Route path="/order/failure" element={<Failure />} />
             <Route path="/admin" element={<AdminIndex />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route
