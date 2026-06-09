@@ -14,24 +14,28 @@ const products = [
     description: 'Cheddar, cebolla, ketchup y mostaza',
     price: 249,
     category: 'promo',
+    image_url: '/images/Antojo.jpeg',
   },
   {
     name: 'Chesseburger Doble',
     description: 'Cheddar, cebolla, ketchup y mostaza',
     price: 450,
     category: 'burger',
+    image_url: '/images/chesseburgerdoble.jpg',
   },
   {
     name: 'Chesseburger',
     description: 'Cheddar, cebolla, ketchup y mostaza',
     price: 350,
     category: 'burger',
+    image_url: '/images/chessebruger.jpg',
   },
   {
     name: 'Bacon Doble',
     description: 'Cheddar, cebolla, bacon, ketchup y mostaza',
     price: 450,
     category: 'burger',
+    image_url: '/images/bacondoble.jpg',
   },
   {
     name: 'Mila Burger Doble',
@@ -84,8 +88,8 @@ async function seed() {
   for (const p of products) {
     await pool.query(
       `INSERT INTO products (name, description, price, image_url, category, available)
-       VALUES ($1, $2, $3, NULL, $4, true)`,
-      [p.name, p.description, p.price, p.category]
+       VALUES ($1, $2, $3, $4, $5, true)`,
+      [p.name, p.description, p.price, p.image_url ?? null, p.category]
     );
   }
   console.log(`${products.length} products seeded`);
