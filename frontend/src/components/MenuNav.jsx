@@ -11,18 +11,18 @@ const CATEGORIES = [
 
 const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.key, c.label]));
 
-export default function MenuSidebar({ categories, activeCategory, onCategoryClick }) {
+export default function MenuNav({ categories, activeCategory, onCategoryClick }) {
   return (
-    <aside className="menu-sidebar">
+    <nav className="menu-nav">
       {categories.map(cat => (
         <button
           key={cat}
-          className={`menu-sidebar-item${activeCategory === cat ? ' active' : ''}`}
+          className={`menu-nav-item${activeCategory === cat ? ' active' : ''}`}
           onClick={() => onCategoryClick(cat)}
         >
           {CATEGORY_LABEL[cat]}
         </button>
       ))}
-    </aside>
+    </nav>
   );
 }

@@ -3,6 +3,7 @@ const router = express.Router();
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
 const pool = require('../db');
 const authMiddleware = require('../middleware/auth');
+const { sendNewOrderMail } = require('../mailer');
 
 function getMpClient() {
   return new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
@@ -21,9 +22,11 @@ router.post('/checkout', async (req, res) => {
     if (!process.env.MP_ACCESS_TOKEN) {
       const { rows } = await pool.query(
         `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status)
-         VALUES ($1, $2, $3, $4, $5, $6, 'paid') RETURNING id`,
+         VALUES ($1, $2, $3, $4, $5, $6, 'paid') RETURNING *`,
         [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total]
       );
+      const order = { ...rows[0], items };
+      try { await sendNewOrderMail(order); } catch (_) {}
       return res.json({ order_id: rows[0].id, init_point: null });
     }
 
@@ -77,10 +80,13 @@ router.post('/webhook', async (req, res) => {
       const payment = new Payment(getMpClient());
       const paymentInfo = await payment.get({ id: data.id });
       if (paymentInfo.status === 'approved') {
-        await pool.query(
-          `UPDATE orders SET payment_status = 'paid', mp_payment_id = $1 WHERE id = $2`,
+        const { rows } = await pool.query(
+          `UPDATE orders SET payment_status = 'paid', mp_payment_id = $1 WHERE id = $2 RETURNING *`,
           [String(paymentInfo.id), paymentInfo.external_reference]
         );
+        if (rows.length) {
+          try { await sendNewOrderMail(rows[0]); } catch (_) {}
+        }
       }
     } catch (err) {
       console.error('Webhook error:', err.message);

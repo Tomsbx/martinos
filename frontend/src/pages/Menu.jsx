@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts } from '../api/api';
 import Header from '../components/Header';
-import CategoryTabs from '../components/CategoryTabs';
 import ProductCard from '../components/ProductCard';
 import CartBar from '../components/CartBar';
-import MenuSidebar from '../components/MenuSidebar';
+import MenuNav from '../components/MenuNav';
+import StoreHero from '../components/StoreHero';
+import Footer from '../components/Footer';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const CATEGORIES = [
   { key: 'promo',      label: 'Promos' },
@@ -95,43 +97,40 @@ export default function Menu() {
   return (
     <div>
       <Header />
-      <div className="menu-layout">
-        <MenuSidebar
-          categories={availableCategories}
-          activeCategory={activeCategory}
-          onCategoryClick={scrollToSection}
-        />
-        <div className="menu-content">
-          <div className="menu-mobile-tabs">
-            <CategoryTabs active={activeCategory} onChange={scrollToSection} />
+      <StoreHero />
+      <MenuNav
+        categories={availableCategories}
+        activeCategory={activeCategory}
+        onCategoryClick={scrollToSection}
+      />
+      <div className="menu-content">
+        {loading ? (
+          <div className="menu-section-grid">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="skeleton" />
+            ))}
           </div>
-
-          {loading ? (
-            <div className="menu-section-grid">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="skeleton" />
-              ))}
-            </div>
-          ) : (
-            availableCategories.map(cat => (
-              <div
-                key={cat}
-                ref={el => { sectionRefs.current[cat] = el; }}
-                data-category={cat}
-                className="menu-section"
-              >
-                <h2 className="menu-section-title">{CATEGORY_LABEL[cat]}</h2>
-                <div className="menu-section-grid">
-                  {grouped[cat].map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
+        ) : (
+          availableCategories.map(cat => (
+            <div
+              key={cat}
+              ref={el => { sectionRefs.current[cat] = el; }}
+              data-category={cat}
+              className="menu-section"
+            >
+              <h2 className="menu-section-title">{CATEGORY_LABEL[cat]}</h2>
+              <div className="menu-section-grid">
+                {grouped[cat].map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
               </div>
-            ))
-          )}
-        </div>
+            </div>
+          ))
+        )}
       </div>
+      <Footer />
       <CartBar />
+      <WhatsAppButton />
     </div>
   );
 }

@@ -27,7 +27,8 @@ export default function App() {
       <CartProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Menu />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/success" element={<Success />} />
