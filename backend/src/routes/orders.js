@@ -10,16 +10,18 @@ function getMpClient() {
 }
 
 router.post('/checkout', async (req, res) => {
-  const { customer_name, customer_phone, delivery_address, items } = req.body;
+  const { customer_name, customer_phone, delivery_address, items, payment_method, total: clientTotal } = req.body;
   if (!customer_name || !customer_phone || !delivery_address || !Array.isArray(items) || !items.length) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   const subtotal = items.reduce((sum, i) => sum + Number(i.price) * Number(i.quantity), 0);
-  const total = subtotal;
+  const total = clientTotal != null ? Number(clientTotal) : subtotal;
+
+  const skipMP = !process.env.MP_ACCESS_TOKEN || payment_method !== 'tarjeta';
 
   try {
-    if (!process.env.MP_ACCESS_TOKEN) {
+    if (skipMP) {
       const { rows } = await pool.query(
         `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status)
          VALUES ($1, $2, $3, $4, $5, $6, 'paid') RETURNING *`,
