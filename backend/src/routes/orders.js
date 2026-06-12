@@ -10,7 +10,7 @@ function getMpClient() {
 }
 
 router.post('/checkout', async (req, res) => {
-  const { customer_name, customer_phone, delivery_address, items, payment_method, total: clientTotal } = req.body;
+  const { customer_name, customer_phone, delivery_address, items, payment_method, notes, total: clientTotal } = req.body;
   if (!customer_name || !customer_phone || !delivery_address || !Array.isArray(items) || !items.length) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -23,9 +23,9 @@ router.post('/checkout', async (req, res) => {
   try {
     if (skipMP) {
       const { rows } = await pool.query(
-        `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method)
-         VALUES ($1, $2, $3, $4, $5, $6, 'paid', $7) RETURNING *`,
-        [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'efectivo']
+        `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method, notes)
+         VALUES ($1, $2, $3, $4, $5, $6, 'paid', $7, $8) RETURNING *`,
+        [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'efectivo', notes || null]
       );
       const order = { ...rows[0], items };
       try { await sendNewOrderMail(order); } catch (_) {}
@@ -33,9 +33,9 @@ router.post('/checkout', async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method)
-       VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7) RETURNING id`,
-      [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'tarjeta']
+      `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7, $8) RETURNING id`,
+      [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'tarjeta', notes || null]
     );
     const orderId = rows[0].id;
 
