@@ -39,7 +39,7 @@ async function sendNewOrderMail(order) {
 
   await transporter.sendMail({
     from: `Martinos <${process.env.SMTP_USER}>`,
-    to: `${process.env.ADMIN_EMAIL}, prueba@gmail.com`,
+    to: `${process.env.ADMIN_EMAIL}, ${process.env.ADMIN_EMAIL2}`,
     subject: `🍔 Nuevo pedido #${order.id} — ${formatPrice(order.total)}`,
     html,
   });
