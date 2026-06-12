@@ -119,6 +119,11 @@ export default function Menu() {
               className="menu-section"
             >
               <h2 className="menu-section-title">{CATEGORY_LABEL[cat]}</h2>
+              {cat === 'burger' && (
+                <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px' }}>
+                  Todas las burgers vienen con papas 🍟
+                </p>
+              )}
               <div className="menu-section-grid">
                 {grouped[cat].map(product => (
                   <ProductCard key={product.id} product={product} />
