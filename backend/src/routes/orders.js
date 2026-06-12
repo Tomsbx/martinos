@@ -23,9 +23,9 @@ router.post('/checkout', async (req, res) => {
   try {
     if (skipMP) {
       const { rows } = await pool.query(
-        `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status)
-         VALUES ($1, $2, $3, $4, $5, $6, 'paid') RETURNING *`,
-        [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total]
+        `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method)
+         VALUES ($1, $2, $3, $4, $5, $6, 'paid', $7) RETURNING *`,
+        [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'efectivo']
       );
       const order = { ...rows[0], items };
       try { await sendNewOrderMail(order); } catch (_) {}
@@ -33,9 +33,9 @@ router.post('/checkout', async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status)
-       VALUES ($1, $2, $3, $4, $5, $6, 'pending') RETURNING id`,
-      [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total]
+      `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7) RETURNING id`,
+      [customer_name, customer_phone, delivery_address, JSON.stringify(items), subtotal, total, payment_method || 'tarjeta']
     );
     const orderId = rows[0].id;
 

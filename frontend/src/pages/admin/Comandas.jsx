@@ -41,6 +41,47 @@ function PinIcon() {
   );
 }
 
+function CashIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <circle cx="12" cy="12" r="2" />
+      <path d="M6 12h.01M18 12h.01" />
+    </svg>
+  );
+}
+
+function CardIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" />
+    </svg>
+  );
+}
+
+function PaymentInfo({ method, status }) {
+  const isCard = method === 'tarjeta';
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
+      {isCard ? <CardIcon /> : <CashIcon />}
+      <span style={{ color: 'var(--text)' }}>{isCard ? 'Tarjeta' : 'Efectivo'}</span>
+      {isCard && (
+        <span style={{
+          fontSize: 11,
+          padding: '1px 7px',
+          borderRadius: 99,
+          background: status === 'paid' ? '#22C55E22' : '#F8717122',
+          color: status === 'paid' ? '#22C55E' : '#F87171',
+          border: `1px solid ${status === 'paid' ? '#22C55E55' : '#F8717155'}`,
+        }}>
+          {status === 'paid' ? 'Aprobado' : 'Rechazado'}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function Comandas() {
   const [date, setDate] = useState(todayISO());
   const [orders, setOrders] = useState([]);
@@ -112,6 +153,8 @@ export default function Comandas() {
                   <PinIcon />
                   {order.delivery_address}
                 </div>
+
+                <PaymentInfo method={order.payment_method} status={order.payment_status} />
 
                 <div className="comanda-items">
                   {order.items.map((item, i) => (
