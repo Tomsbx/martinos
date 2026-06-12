@@ -20,7 +20,7 @@ async function sendNewOrderMail(order) {
     </tr>`).join('');
 
   const html = `
-    <div style="font-family:sans-serif;max-width:520px;margin:0 auto;">
+    <div style="font-family:sans-serif;max-width:520px;margin:0 auto;background-color:#ffffff;color:#000000;padding:16px;">
       <h2 style="margin-bottom:4px;">🍔 Nuevo pedido #${order.id}</h2>
       <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
         <tr><td style="padding:6px 12px;color:#666;">Nombre</td><td style="padding:6px 12px;">${order.customer_name}</td></tr>
