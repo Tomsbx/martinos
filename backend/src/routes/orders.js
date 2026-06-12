@@ -42,12 +42,12 @@ router.post('/checkout', async (req, res) => {
     const preference = new Preference(getMpClient());
     const prefResult = await preference.create({
       body: {
-        items: items.map(i => ({
-          title: i.name,
-          quantity: Number(i.quantity),
-          unit_price: Number(i.price),
+        items: [{
+          title: 'Pedido Martinos',
+          quantity: 1,
+          unit_price: parseFloat(total),
           currency_id: 'UYU',
-        })),
+        }],
         external_reference: String(orderId),
         back_urls: {
           success: `${process.env.FRONTEND_URL}/order/success`,
