@@ -1,10 +1,16 @@
 import { useCart } from '../context/CartContext';
+import { trackAddToCart } from '../utils/analytics';
 
 const formatPrice = (price) =>
   '$' + Math.round(Number(price)).toLocaleString('es-UY');
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
+
+  function handleAddItem() {
+    addItem(product);
+    trackAddToCart({ product_id: product.id, name: product.name, price: Number(product.price), quantity: 1 });
+  }
 
   return (
     <div className="product-card">
@@ -32,7 +38,7 @@ export default function ProductCard({ product }) {
           <span className="product-price">{formatPrice(product.price)}</span>
           <button
             className="btn-add"
-            onClick={() => addItem(product)}
+            onClick={handleAddItem}
             aria-label={`Agregar ${product.name}`}
           >
             +

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { postCheckout } from '../api/api';
+import { trackBeginCheckout } from '../utils/analytics';
 
 const formatPrice = (price) =>
   '$' + Math.round(Number(price)).toLocaleString('es-UY');
@@ -25,6 +26,10 @@ export default function Checkout() {
   useEffect(() => {
     if (items.length === 0 && !orderPlaced.current) navigate('/');
   }, [items, navigate]);
+
+  useEffect(() => {
+    trackBeginCheckout(items, subtotal);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +72,11 @@ export default function Checkout() {
       const { init_point } = await postCheckout(body);
       orderPlaced.current = true;
       clearCart();
+      sessionStorage.setItem('martinos_last_order', JSON.stringify({
+        orderId: Date.now().toString(),
+        items,
+        total,
+      }));
       if (init_point) {
         window.location.href = init_point;
       } else {

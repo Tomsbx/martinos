@@ -1,6 +1,17 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { trackPurchase } from '../utils/analytics';
 
 export default function Success() {
+  useEffect(() => {
+    const raw = sessionStorage.getItem('martinos_last_order');
+    if (raw) {
+      const { orderId, items, total } = JSON.parse(raw);
+      trackPurchase(orderId, items, total);
+      sessionStorage.removeItem('martinos_last_order');
+    }
+  }, []);
+
   return (
     <div className="success-page">
       <div className="success-icon">
