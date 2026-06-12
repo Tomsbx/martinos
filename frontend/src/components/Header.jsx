@@ -11,7 +11,7 @@ export default function Header() {
     <>
       <header className="header">
         <Link to="/" className="logo" style={{ textDecoration: 'none' }}>
-          Martinos
+          <img src="/images/logo.png" alt="Martinos" style={{ height: '40px', width: 'auto' }} />
         </Link>
 
         <button className="cart-btn" onClick={() => setDrawerOpen(true)} aria-label="Abrir carrito">

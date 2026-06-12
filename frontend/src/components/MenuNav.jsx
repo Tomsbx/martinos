@@ -13,7 +13,7 @@ const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.key, c.label]))
 
 export default function MenuNav({ categories, activeCategory, onCategoryClick }) {
   return (
-    <nav className="menu-nav">
+    <nav className="menu-nav" style={{ padding: '0 24px' }}>
       {categories.map(cat => (
         <button
           key={cat}

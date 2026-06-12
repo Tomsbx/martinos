@@ -1358,50 +1358,22 @@ img {
 .store-hero-inner {
   max-width: 900px;
   margin: 0 auto;
-  padding: 16px 24px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
 }
 
-.store-hero-left {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.store-hero-logo {
-  font-family: 'Dancing Script', cursive;
-  font-size: 36px;
-  color: var(--text);
-  line-height: 1;
-}
-
-.store-hero-tagline {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.store-hero-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
 .store-hero-info {
-  font-size: 13px;
-  color: var(--text);
-}
-
-.store-hero-label {
-  color: var(--text-muted);
+  font-size: 14px;
+  color: #ffffff;
 }
 
 .store-hero-sep {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 14px;
+  padding: 0 4px;
 }
 
 @media (max-width: 600px) {
