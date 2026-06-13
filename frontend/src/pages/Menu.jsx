@@ -135,9 +135,9 @@ export default function Menu() {
                   Todas las burgers vienen con papas 🍟
                 </p>
               )}
-              <div className="menu-section-grid">
+              <div className={cat === 'promo' ? 'menu-section-grid' : 'menu-section-list'}>
                 {grouped[cat].map(product => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} horizontal={cat !== 'promo'} />
                 ))}
               </div>
             </div>

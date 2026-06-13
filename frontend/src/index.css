@@ -170,6 +170,7 @@ img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
+  object-position: top;
 }
 
 .product-img-placeholder {
@@ -236,6 +237,56 @@ img {
 
 .btn-add:hover {
   background: #222222;
+}
+
+/* ── Product Card — horizontal variant ───── */
+.product-card-horizontal {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.product-card.product-card-horizontal .product-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  padding: 16px;
+}
+
+.product-img-wrap {
+  position: relative;
+  width: 40%;
+  flex-shrink: 0;
+  height: auto;
+}
+
+.product-card-horizontal .product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: unset;
+  display: block;
+}
+
+.product-card-horizontal .product-img-placeholder {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
+
+.product-card-horizontal .btn-add {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.menu-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* ── Skeleton ────────────────────────────── */
@@ -1568,18 +1619,27 @@ img {
 }
 
 .menu-section-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
   gap: 12px;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.menu-section-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-section-grid .product-card {
+  min-width: 200px;
+  max-width: 200px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
   .menu-content {
     padding: 16px 16px 80px;
-  }
-
-  .menu-section-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
