@@ -211,7 +211,7 @@ export default function Checkout() {
 
           <div className="order-total-row">
             <span>Total</span>
-            <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatPrice(total)}</span>
+            <span style={{ color: '#ffffff', fontWeight: 700 }}>{formatPrice(total)}</span>
           </div>
         </div>
 

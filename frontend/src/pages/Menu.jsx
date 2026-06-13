@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts } from '../api/api';
+import Navbar from '../components/Navbar';
 import Header from '../components/Header';
+import NavDrawer from '../components/NavDrawer';
 import ProductCard from '../components/ProductCard';
 import CartBar from '../components/CartBar';
-import MenuNav from '../components/MenuNav';
 import StoreHero from '../components/StoreHero';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
@@ -30,6 +31,7 @@ export default function Menu() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(catParam || 'promo');
+  const [navOpen, setNavOpen] = useState(false);
 
   const sectionRefs = useRef({});
   const visibleSections = useRef(new Set());
@@ -70,11 +72,17 @@ export default function Menu() {
     return () => observer.disconnect();
   }, [loading]);
 
+  function scrollWithOffset(el) {
+    const navbarHeight = 56;
+    const top = el.getBoundingClientRect().top + window.scrollY - navbarHeight - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
   // Scroll to section from URL param on initial load
   useEffect(() => {
     if (loading || !catParam) return;
     const el = sectionRefs.current[catParam];
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) scrollWithOffset(el);
   }, [loading, catParam]);
 
   function scrollToSection(cat) {
@@ -83,7 +91,7 @@ export default function Menu() {
       return;
     }
     const el = sectionRefs.current[cat];
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) scrollWithOffset(el);
   }
 
   const grouped = CATEGORY_ORDER.reduce((acc, cat) => {
@@ -93,16 +101,19 @@ export default function Menu() {
   }, {});
 
   const availableCategories = Object.keys(grouped);
+  const availableCategoryObjects = CATEGORIES.filter(c => availableCategories.includes(c.key));
 
   return (
-    <div>
-      <Header />
-      <StoreHero />
-      <MenuNav
-        categories={availableCategories}
-        activeCategory={activeCategory}
+    <div style={{ paddingTop: '56px' }}>
+      <Navbar onMenuOpen={() => setNavOpen(true)} />
+      <NavDrawer
+        open={navOpen}
+        onClose={() => setNavOpen(false)}
+        categories={availableCategoryObjects}
         onCategoryClick={scrollToSection}
       />
+      <Header />
+      <StoreHero />
       <div className="menu-content">
         {loading ? (
           <div className="menu-section-grid">

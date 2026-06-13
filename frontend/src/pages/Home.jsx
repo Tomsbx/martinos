@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
+import Navbar from '../components/Navbar';
 
 function BurgerIcon() {
   return (
@@ -51,7 +51,7 @@ function CategoryCard({ to, image, label, icon }) {
 
 const S = {
   accentLabel: {
-    color: 'var(--accent)',
+    color: '#ffffff',
     textTransform: 'uppercase',
     letterSpacing: '0.15em',
     fontSize: 13,
@@ -73,8 +73,8 @@ const S = {
 
 export default function Home() {
   return (
-    <div>
-      <Header />
+    <div style={{ paddingTop: '56px' }}>
+      <Navbar />
 
       {/* ── Hero ─────────────────────────────── */}
       <section className="home-hero">
@@ -127,7 +127,7 @@ export default function Home() {
             <h1 style={{ fontSize: 52, fontWeight: 700, lineHeight: 1.1, marginTop: 12, color: '#fff', textTransform: 'uppercase' }}>
               SABOR REAL,<br />EXPERIENCIA
             </h1>
-            <p style={{ fontFamily: "'Dancing Script', cursive", color: 'var(--accent)', fontSize: 56, fontWeight: 700, lineHeight: 1.2, marginTop: 4 }}>
+            <p style={{ fontFamily: "'Dancing Script', cursive", color: '#ffffff', fontSize: 56, fontWeight: 700, lineHeight: 1.2, marginTop: 4 }}>
               Martinos
             </p>
             <p style={{ ...S.mutedText, maxWidth: 400, marginTop: 16, marginBottom: 32 }}>
@@ -195,7 +195,7 @@ export default function Home() {
           </div>
           <div>
             <span style={S.sectionLabel}>SOBRE</span>
-            <p style={{ fontFamily: "'Dancing Script', cursive", color: 'var(--accent)', fontSize: 48, fontWeight: 700, lineHeight: 1.1, margin: '8px 0 24px' }}>
+            <p style={{ fontFamily: "'Dancing Script', cursive", color: '#ffffff', fontSize: 48, fontWeight: 700, lineHeight: 1.1, margin: '8px 0 24px' }}>
               Martinos
             </p>
             <p style={{ ...S.mutedText, marginBottom: 16 }}>
@@ -226,7 +226,7 @@ export default function Home() {
       <div style={{ background: '#111111', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '32px 24px' }}>
         <div className="info-strip-inner">
           <div className="info-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <rect x="1" y="3" width="15" height="13" rx="2" />
               <path d="M16 8h4l3 4v4h-7V8z" />
               <circle cx="5.5" cy="18.5" r="2.5" />
@@ -237,7 +237,7 @@ export default function Home() {
           </div>
           <div className="info-divider" />
           <div className="info-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <rect x="1" y="4" width="22" height="16" rx="2" />
               <line x1="1" y1="10" x2="23" y2="10" />
             </svg>
@@ -246,7 +246,7 @@ export default function Home() {
           </div>
           <div className="info-divider" />
           <div className="info-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
@@ -295,7 +295,7 @@ export default function Home() {
                 },
               ].map(({ icon, text }) => (
                 <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round">
                     {icon}
                   </svg>
                   <span style={{ color: 'var(--text-muted)', fontSize: 14 }}>{text}</span>

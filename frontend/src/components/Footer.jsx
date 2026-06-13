@@ -12,7 +12,6 @@ export default function Footer() {
           <h3 className="footer-heading">Contacto</h3>
           <ul className="footer-list">
             <li>094 573 638</li>
-            <li>martinosgrill@gmail.com</li>
             <li>Pando, Canelones, Uruguay</li>
           </ul>
         </div>

@@ -69,7 +69,7 @@ export default function CartDrawer({ open, onClose }) {
               <span>{formatPrice(total)}</span>
             </div>
             <button className="btn-go-checkout" onClick={handleCheckout}>
-              Ir a pagar
+              Confirmar pedido
             </button>
           </div>
         )}

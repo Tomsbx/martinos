@@ -178,7 +178,7 @@ export default function Comandas() {
                 </div>
 
                 <div className="comanda-total">
-                  Total: <strong style={{ color: 'var(--accent)' }}>{formatPrice(order.total)}</strong>
+                  Total: <strong style={{ color: '#ffffff' }}>{formatPrice(order.total)}</strong>
                 </div>
 
                 <div className="comanda-status-controls">
