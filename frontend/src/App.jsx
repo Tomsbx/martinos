@@ -10,6 +10,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import Comandas from './pages/admin/Comandas';
 import Productos from './pages/admin/Productos';
+import NuevaComanda from './pages/admin/NuevaComanda';
 
 function RequireAuth({ children }) {
   const { isAuthenticated } = useAuth();
@@ -50,6 +51,14 @@ export default function App() {
               element={
                 <RequireAuth>
                   <AdminLayout><Productos /></AdminLayout>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin/nueva-comanda"
+              element={
+                <RequireAuth>
+                  <AdminLayout><NuevaComanda /></AdminLayout>
                 </RequireAuth>
               }
             />

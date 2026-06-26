@@ -21,6 +21,17 @@ function ProductsIcon() {
   );
 }
 
+function NewOrderIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="12" y1="18" x2="12" y2="12" />
+      <line x1="9" y1="15" x2="15" y2="15" />
+    </svg>
+  );
+}
+
 function LogoutIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -58,6 +69,13 @@ export default function AdminLayout({ children }) {
           >
             <ProductsIcon />
             <span className="admin-nav-label">Productos</span>
+          </NavLink>
+          <NavLink
+            to="/admin/nueva-comanda"
+            className={({ isActive }) => `admin-nav-link${isActive ? ' active' : ''}`}
+          >
+            <NewOrderIcon />
+            <span className="admin-nav-label">Nueva Comanda</span>
           </NavLink>
         </nav>
         <button className="admin-sidebar-logout" onClick={handleLogout}>

@@ -51,3 +51,50 @@ export async function toggleProduct(id) {
   if (!res.ok) throw new Error('Error al actualizar producto');
   return res.json();
 }
+
+export async function createManualOrder(data) {
+  const res = await fetch(`${API_URL}/orders/manual`, {
+    method: 'POST',
+    headers: jsonHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || 'Error al crear la comanda');
+  }
+  return res.json();
+}
+
+export async function getAllProductsAdmin() {
+  const res = await fetch(`${API_URL}/products/admin/all`, {
+    headers: authHeader(),
+  });
+  if (!res.ok) throw new Error('Error al cargar productos');
+  return res.json();
+}
+
+export async function createProduct(formData) {
+  const res = await fetch(`${API_URL}/products`, {
+    method: 'POST',
+    headers: authHeader(),
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || 'Error al crear producto');
+  }
+  return res.json();
+}
+
+export async function updateProductImage(id, formData) {
+  const res = await fetch(`${API_URL}/products/${id}/image`, {
+    method: 'PATCH',
+    headers: authHeader(),
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || 'Error al actualizar imagen');
+  }
+  return res.json();
+}

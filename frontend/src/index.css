@@ -170,7 +170,7 @@ img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
 }
 
 .product-img-placeholder {
@@ -1596,7 +1596,7 @@ img {
 
 /* ── Menu content ────── */
 .menu-content {
-  max-width: 900px;
+  max-width: 480px;
   margin: 0 auto;
   padding: 0 24px 80px;
 }
@@ -1718,5 +1718,30 @@ img {
   .footer-inner {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+}
+
+/* ── Print ticket ────────────────────────── */
+@media screen {
+  #print-ticket { display: none; }
+}
+
+@media print {
+  body * { visibility: hidden; }
+
+  #print-ticket {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80mm;
+  }
+
+  #print-ticket,
+  #print-ticket * { visibility: visible; }
+
+  @page {
+    margin: 0;
+    size: 80mm auto;
   }
 }

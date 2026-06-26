@@ -98,6 +98,61 @@ router.post('/webhook', async (req, res) => {
   res.sendStatus(200);
 });
 
+router.post('/manual', authMiddleware, async (req, res) => {
+  let { customer_name, customer_phone, delivery_type, delivery_address, items, notes } = req.body;
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: 'items must be a non-empty array' });
+  }
+  if (items.some(i => !i.product_id || Number(i.quantity) < 1)) {
+    return res.status(400).json({ error: 'Each item must have a valid product_id and quantity >= 1' });
+  }
+
+  customer_name = (customer_name || '').trim() || 'Pedido mostrador';
+  customer_phone = (customer_phone || '').trim();
+
+  const isDelivery = delivery_type === 'delivery';
+  if (isDelivery && !(delivery_address || '').trim()) {
+    return res.status(400).json({ error: 'delivery_address is required for delivery orders' });
+  }
+  const resolvedAddress = isDelivery ? delivery_address.trim() : 'Retiro en local';
+
+  const productIds = [...new Set(items.map(i => Number(i.product_id)))];
+
+  try {
+    const { rows: foundProducts } = await pool.query(
+      'SELECT id, name, price FROM products WHERE id = ANY($1) AND available = true',
+      [productIds]
+    );
+
+    if (foundProducts.length !== productIds.length) {
+      return res.status(400).json({ error: 'One or more products not found or unavailable' });
+    }
+
+    const productMap = {};
+    for (const p of foundProducts) productMap[p.id] = p;
+
+    const resolvedItems = items.map(i => ({
+      product_id: Number(i.product_id),
+      name: productMap[Number(i.product_id)].name,
+      price: parseFloat(productMap[Number(i.product_id)].price),
+      quantity: Number(i.quantity),
+    }));
+
+    const subtotal = resolvedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+    const { rows } = await pool.query(
+      `INSERT INTO orders (customer_name, customer_phone, delivery_address, items, subtotal, total, payment_status, payment_method, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, 'paid', 'local', $7) RETURNING *`,
+      [customer_name, customer_phone, resolvedAddress, JSON.stringify(resolvedItems), subtotal, subtotal, notes || null]
+    );
+
+    res.status(201).json({ order_id: rows[0].id, order: rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const params = [];

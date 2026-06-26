@@ -60,6 +60,16 @@ function CardIcon() {
   );
 }
 
+function PrinterIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="6 9 6 2 18 2 18 9" />
+      <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+      <rect x="6" y="14" width="12" height="8" />
+    </svg>
+  );
+}
+
 function PaymentInfo({ method, status }) {
   const isCard = method === 'tarjeta';
   return (
@@ -82,10 +92,80 @@ function PaymentInfo({ method, status }) {
   );
 }
 
+const TICKET_HR = { border: 'none', borderTop: '1px dashed #000', margin: '6px 0' };
+
+function PrintTicket({ order }) {
+  const isDelivery = order.delivery_address !== 'Retiro en local';
+  const dt = new Date(order.created_at);
+  const dateStr = dt.toLocaleDateString('es-UY', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const timeStr = dt.toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit', hour12: false });
+  const customerName = order.customer_name || 'Pedido mostrador';
+
+  return (
+    <div style={{ fontFamily: "'Courier New', Courier, monospace", fontSize: 11, color: '#000', lineHeight: 1.6, padding: '4mm 3mm' }}>
+      <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 14, marginBottom: 2 }}>
+        MARTINOS GRILL
+      </div>
+      <hr style={TICKET_HR} />
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }}>
+        <span>COMANDA #{order.id}</span>
+        <span>{timeStr}</span>
+      </div>
+      <div style={{ fontSize: 10 }}>{dateStr}</div>
+
+      <hr style={TICKET_HR} />
+
+      {isDelivery ? (
+        <>
+          <div style={{ fontWeight: 'bold' }}>DELIVERY</div>
+          <div>{order.delivery_address}</div>
+        </>
+      ) : (
+        <div style={{ fontWeight: 'bold' }}>RETIRO EN LOCAL</div>
+      )}
+
+      {customerName !== 'Pedido mostrador' && (
+        <div style={{ marginTop: 4 }}>Cliente: {customerName}</div>
+      )}
+      {order.customer_phone && (
+        <div>Tel: {order.customer_phone}</div>
+      )}
+
+      <hr style={TICKET_HR} />
+
+      {order.items.map((item, i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 4 }}>
+          <span>{item.quantity} x {item.name}</span>
+          <span style={{ flexShrink: 0 }}>{formatPrice(item.price * item.quantity)}</span>
+        </div>
+      ))}
+
+      <hr style={TICKET_HR} />
+
+      {order.notes && (
+        <>
+          <div style={{ fontWeight: 'bold' }}>INDICACIONES:</div>
+          <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: 12, marginTop: 2 }}>
+            {order.notes}
+          </div>
+          <hr style={TICKET_HR} />
+        </>
+      )}
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: 13, marginTop: 2 }}>
+        <span>TOTAL</span>
+        <span>{formatPrice(order.total)}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function Comandas() {
   const [date, setDate] = useState(todayISO());
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [printingOrder, setPrintingOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = () => getOrders(date).then(setOrders).catch(console.error);
@@ -96,6 +176,14 @@ export default function Comandas() {
     const interval = setInterval(fetchOrders, 30000);
     return () => clearInterval(interval);
   }, [date]);
+
+  useEffect(() => {
+    if (!printingOrder) return;
+    const cleanup = () => setPrintingOrder(null);
+    window.addEventListener('afterprint', cleanup);
+    window.print();
+    return () => window.removeEventListener('afterprint', cleanup);
+  }, [printingOrder]);
 
   async function handleStatusChange(orderId, newStatus) {
     try {
@@ -197,11 +285,33 @@ export default function Comandas() {
                     );
                   })}
                 </div>
+                <button
+                  className="comanda-status-btn"
+                  style={{
+                    width: '100%',
+                    marginTop: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    color: 'var(--accent)',
+                    borderColor: 'var(--accent)',
+                    background: 'rgba(232, 144, 10, 0.08)',
+                  }}
+                  onClick={() => setPrintingOrder(order)}
+                >
+                  <PrinterIcon />
+                  Imprimir
+                </button>
               </div>
             );
           })}
         </div>
       )}
+
+      <div id="print-ticket">
+        {printingOrder && <PrintTicket order={printingOrder} />}
+      </div>
     </div>
   );
 }
