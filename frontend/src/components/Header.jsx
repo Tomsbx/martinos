@@ -1,5 +1,5 @@
 export default function Header() {
   return (
-    <header className="header" style={{ backgroundImage: "url('/images/LTC.jpg')" }} />
+    <header className="header" style={{ backgroundImage: "url('/images/PORTADA.jpeg')" }} />
   );
 }
