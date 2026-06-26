@@ -56,7 +56,7 @@ img {
 .header {
   height: 220px;
   background-size: cover;
-  background-position: center;
+  background-position: center 30%;
   background-repeat: no-repeat;
   position: relative;
 }
@@ -168,14 +168,14 @@ img {
 
 .product-img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   object-fit: cover;
   object-position: top;
 }
 
 .product-img-placeholder {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   background: #2A2A2A;
   display: flex;
   align-items: center;
