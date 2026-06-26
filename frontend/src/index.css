@@ -1736,7 +1736,7 @@ img {
     left: 0;
     width: 80mm;
     box-sizing: border-box;
-    padding: 0 4mm;
+    padding: 0 4mm 20mm;
   }
 
   #print-ticket,
