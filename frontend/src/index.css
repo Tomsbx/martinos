@@ -1729,7 +1729,8 @@ img {
 @media print {
   html, body { height: auto !important; overflow: hidden !important; }
 
-  body * { visibility: hidden; }
+  .admin-layout > *:not(.admin-main) { display: none !important; }
+  .admin-page > *:not(#print-ticket) { display: none !important; }
 
   #print-ticket {
     display: block !important;
@@ -1740,9 +1741,6 @@ img {
     box-sizing: border-box;
     padding: 0 2.5mm 20mm;
   }
-
-  #print-ticket,
-  #print-ticket * { visibility: visible; }
 
   @page {
     margin: 0;
