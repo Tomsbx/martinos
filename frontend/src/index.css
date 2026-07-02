@@ -1727,11 +1727,13 @@ img {
 }
 
 @media print {
+  html, body { height: auto !important; overflow: hidden !important; }
+
   body * { visibility: hidden; }
 
   #print-ticket {
     display: block !important;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 72mm;
