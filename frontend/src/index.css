@@ -1734,9 +1734,9 @@ img {
     position: fixed;
     top: 0;
     left: 0;
-    width: 80mm;
+    width: 72mm;
     box-sizing: border-box;
-    padding: 0 4mm 20mm;
+    padding: 0 2.5mm 20mm;
   }
 
   #print-ticket,
@@ -1744,6 +1744,6 @@ img {
 
   @page {
     margin: 0;
-    size: 80mm auto;
+    size: 72mm auto;
   }
 }
